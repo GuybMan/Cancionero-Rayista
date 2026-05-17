@@ -61,7 +61,7 @@
     main {
       width: min(900px, 94vw);
       margin: 0 auto;
-      padding: 12px 0 48px;
+      padding: 12px 0 160px;
     }
 
     .card {
@@ -99,14 +99,26 @@
 
     audio {
       width: 100%;
-      margin: 8px 0 16px;
+      margin: 8px 0 12px;
+    }
+
+    .playerBar {
+      position: sticky;
+      bottom: 10px;
+      z-index: 50;
+      background: rgba(20,22,34,0.96);
+      border: 1px solid rgba(255,255,255,0.16);
+      border-radius: 22px;
+      padding: 12px;
+      margin-bottom: 18px;
+      box-shadow: 0 12px 40px rgba(0,0,0,0.45);
+      backdrop-filter: blur(10px);
     }
 
     .controls {
       display: grid;
       grid-template-columns: 1fr;
       gap: 10px;
-      margin-bottom: 18px;
     }
 
     button {
@@ -128,6 +140,27 @@
 
     button.active {
       outline: 3px solid rgba(255,255,255,0.45);
+    }
+
+    .followBtn {
+      position: fixed;
+      left: 50%;
+      bottom: 118px;
+      transform: translateX(-50%);
+      z-index: 100;
+      display: none;
+      border: 1px solid rgba(255,255,255,0.25);
+      background: white;
+      color: #111;
+      border-radius: 999px;
+      padding: 12px 18px;
+      font-size: 15px;
+      font-weight: 900;
+      box-shadow: 0 12px 35px rgba(0,0,0,0.45);
+    }
+
+    .followBtn.visible {
+      display: block;
     }
 
     .lyrics {
@@ -191,6 +224,10 @@
         display: inline-block;
         margin-top: 10px;
       }
+
+      .followBtn {
+        bottom: 128px;
+      }
     }
   </style>
 </head>
@@ -204,18 +241,20 @@
   <main>
     <section class="index" id="songIndex"></section>
 
-    <section class="card" id="vamos-rayo">
+    <section class="card" id="karaoke">
       <div class="song-title">
         <h2 id="songTitle">Vamos Rayo</h2>
         <span class="tag" id="songTag">Imprescindible</span>
       </div>
 
-      <audio id="audio" preload="auto" controls>
-        Tu navegador no puede reproducir este audio.
-      </audio>
+      <div class="playerBar">
+        <audio id="audio" preload="auto" controls>
+          Tu navegador no puede reproducir este audio.
+        </audio>
 
-      <div class="controls">
-        <button class="primary" id="playBtn">▶ Play / Pausa</button>
+        <div class="controls">
+          <button class="primary" id="playBtn">▶ Play / Pausa</button>
+        </div>
       </div>
 
       <div class="lyrics" id="lyrics"></div>
@@ -226,6 +265,8 @@
     </section>
   </main>
 
+  <button id="followBtn" class="followBtn">↓ Seguir letra</button>
+
   <script>
     const audio = document.getElementById("audio");
     const lyricsEl = document.getElementById("lyrics");
@@ -233,6 +274,7 @@
     const songIndex = document.getElementById("songIndex");
     const songTitle = document.getElementById("songTitle");
     const songTag = document.getElementById("songTag");
+    const followBtn = document.getElementById("followBtn");
 
     const songs = [
       {
@@ -280,20 +322,23 @@
     ];
 
     let currentSong = songs[0];
+    let autoScroll = true;
+    let lastActiveIndex = -1;
+    let touchStartY = 0;
 
     function renderIndex() {
       songIndex.innerHTML = "";
 
       songs.forEach((song, index) => {
         const link = document.createElement("a");
-        link.href = "#vamos-rayo";
+        link.href = "#karaoke";
         link.textContent = "▶ " + song.title;
 
         link.addEventListener("click", (event) => {
           event.preventDefault();
           loadSong(index);
 
-          document.getElementById("vamos-rayo").scrollIntoView({
+          document.getElementById("karaoke").scrollIntoView({
             block: "start",
             behavior: "smooth"
           });
@@ -306,6 +351,10 @@
     function loadSong(index) {
       currentSong = songs[index];
 
+      autoScroll = true;
+      lastActiveIndex = -1;
+      followBtn.classList.remove("visible");
+
       audio.pause();
       audio.currentTime = 0;
       audio.src = currentSong.audio;
@@ -315,7 +364,7 @@
       songTag.textContent = currentSong.tag;
 
       renderLyrics();
-      updateActiveLine();
+      updateActiveLine(true);
     }
 
     function renderLyrics() {
@@ -342,9 +391,10 @@
       return active;
     }
 
-    function updateActiveLine() {
+    function updateActiveLine(forceScroll = false) {
       const activeIndex = getActiveIndex(audio.currentTime);
       const lineEls = document.querySelectorAll(".line");
+      const lineChanged = activeIndex !== lastActiveIndex;
 
       lineEls.forEach((el, index) => {
         el.classList.toggle("active", index === activeIndex);
@@ -353,12 +403,27 @@
 
       const activeEl = lineEls[activeIndex];
 
-      if (activeEl) {
+      if (activeEl && (autoScroll || forceScroll) && (lineChanged || forceScroll)) {
         activeEl.scrollIntoView({
           block: "center",
           behavior: "smooth"
         });
       }
+
+      lastActiveIndex = activeIndex;
+    }
+
+    function disableAutoScroll() {
+      if (!audio.paused) {
+        autoScroll = false;
+        followBtn.classList.add("visible");
+      }
+    }
+
+    function enableAutoScroll() {
+      autoScroll = true;
+      followBtn.classList.remove("visible");
+      updateActiveLine(true);
     }
 
     playBtn.addEventListener("click", async () => {
@@ -372,6 +437,32 @@
         alert("El navegador ha bloqueado el audio. Prueba a pulsar el reproductor nativo.");
       }
     });
+
+    window.addEventListener("wheel", (event) => {
+      if (event.deltaY < 0) {
+        disableAutoScroll();
+      }
+    }, { passive: true });
+
+    window.addEventListener("touchstart", (event) => {
+      touchStartY = event.touches[0].clientY;
+    }, { passive: true });
+
+    window.addEventListener("touchmove", (event) => {
+      const currentY = event.touches[0].clientY;
+
+      if (currentY > touchStartY + 8) {
+        disableAutoScroll();
+      }
+    }, { passive: true });
+
+    window.addEventListener("keydown", (event) => {
+      if (["ArrowUp", "PageUp", "Home"].includes(event.key)) {
+        disableAutoScroll();
+      }
+    });
+
+    followBtn.addEventListener("click", enableAutoScroll);
 
     audio.addEventListener("timeupdate", updateActiveLine);
     audio.addEventListener("seeked", updateActiveLine);
