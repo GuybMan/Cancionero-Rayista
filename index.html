@@ -178,6 +178,8 @@
       font-weight: 900;
       text-align: center;
       transition: all 0.18s ease;
+      cursor: pointer;
+      user-select: none;
     }
 
     .line.active {
@@ -422,6 +424,12 @@
         div.className = "line";
         div.dataset.index = index;
         div.textContent = line.text;
+
+        div.addEventListener("click", () => {
+          audio.currentTime = line.time;
+          updateActiveLine();
+        });
+
         lyricsEl.appendChild(div);
       });
     }
