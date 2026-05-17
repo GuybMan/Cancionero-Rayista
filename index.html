@@ -502,9 +502,25 @@
         div.dataset.index = index;
         div.textContent = line.text;
 
-        div.addEventListener("click", () => {
+        div.addEventListener("click", async () => {
+          const activeIndex = getActiveIndex(audio.currentTime);
+          const isCurrentLine = activeIndex === index;
+          const isPlaying = !audio.paused;
+
+          if (isCurrentLine && isPlaying) {
+            audio.pause();
+            updateActiveLine();
+            return;
+          }
+
           audio.currentTime = line.time;
           updateActiveLine();
+
+          try {
+            await audio.play();
+          } catch (error) {
+            alert("El navegador ha bloqueado el audio. Prueba a pulsar el reproductor nativo.");
+          }
         });
 
         lyricsEl.appendChild(div);
