@@ -104,7 +104,7 @@
 
     .controls {
       display: grid;
-      grid-template-columns: repeat(3, 1fr);
+      grid-template-columns: 1fr;
       gap: 10px;
       margin-bottom: 18px;
     }
@@ -183,10 +183,6 @@
     }
 
     @media (max-width: 640px) {
-      .controls {
-        grid-template-columns: 1fr;
-      }
-
       .song-title {
         display: block;
       }
@@ -206,18 +202,15 @@
   </header>
 
   <main>
-    <section class="index">
-      <a href="#vamos-rayo">▶ Vamos Rayo</a>
-    </section>
+    <section class="index" id="songIndex"></section>
 
     <section class="card" id="vamos-rayo">
       <div class="song-title">
-        <h2>Vamos Rayo</h2>
-        <span class="tag">Imprescindible</span>
+        <h2 id="songTitle">Vamos Rayo</h2>
+        <span class="tag" id="songTag">Imprescindible</span>
       </div>
 
       <audio id="audio" preload="auto" controls>
-        <source src="heart-9-fanchants-free.mp3" type="audio/mpeg">
         Tu navegador no puede reproducir este audio.
       </audio>
 
@@ -228,7 +221,7 @@
       <div class="lyrics" id="lyrics"></div>
 
       <p class="hint">
-        Tiempos aproximados. Si una línea entra tarde o pronto, se ajusta en el código cambiando los segundos.
+        Tiempos ajustados. Si una línea entra tarde o pronto, se ajusta en el código cambiando los segundos.
       </p>
     </section>
   </main>
@@ -237,22 +230,72 @@
     const audio = document.getElementById("audio");
     const lyricsEl = document.getElementById("lyrics");
     const playBtn = document.getElementById("playBtn");
-  
+    const songIndex = document.getElementById("songIndex");
+    const songTitle = document.getElementById("songTitle");
+    const songTag = document.getElementById("songTag");
 
-    const lines = [
-      { time: 0.0, text: "Vamos Rayo, te venimos a ver," },
-      { time: 6.0, text: "Pon más huevos, hoy no puedes perder," },
-      { time: 12.0, text: "Te llevamos, dentro del corazón," },
-      { time: 18.0, text: "Este año vamos a salir campeón," },
-      { time: 23.9, text: "Vamos Rayo, te venimos a ver," },
-      { time: 29.5, text: "Pon más huevos, hoy no puedes perder," },
-      { time: 36.8, text: "Te llevamos, dentro del corazón," },
-      { time: 42.5, text: "Este año vamos a salir campeón..." }
+    const songs = [
+      {
+        id: "vamos-rayo",
+        title: "Vamos Rayo",
+        tag: "Imprescindible",
+        audio: "heart-9-fanchants-free.mp3",
+        lines: [
+          { time: 0.0, text: "Vamos Rayo, te venimos a ver," },
+          { time: 6.0, text: "Pon más huevos, hoy no puedes perder," },
+          { time: 12.0, text: "Te llevamos, dentro del corazón," },
+          { time: 18.0, text: "Este año vamos a salir campeón," },
+          { time: 23.9, text: "Vamos Rayo, te venimos a ver," },
+          { time: 29.5, text: "Pon más huevos, hoy no puedes perder," },
+          { time: 36.8, text: "Te llevamos, dentro del corazón," },
+          { time: 42.5, text: "Este año vamos a salir campeón..." }
+        ]
+      }
     ];
+
+    let currentSong = songs[0];
+
+    function renderIndex() {
+      songIndex.innerHTML = "";
+
+      songs.forEach((song, index) => {
+        const link = document.createElement("a");
+        link.href = "#vamos-rayo";
+        link.textContent = "▶ " + song.title;
+
+        link.addEventListener("click", (event) => {
+          event.preventDefault();
+          loadSong(index);
+
+          document.getElementById("vamos-rayo").scrollIntoView({
+            block: "start",
+            behavior: "smooth"
+          });
+        });
+
+        songIndex.appendChild(link);
+      });
+    }
+
+    function loadSong(index) {
+      currentSong = songs[index];
+
+      audio.pause();
+      audio.currentTime = 0;
+      audio.src = currentSong.audio;
+      audio.load();
+
+      songTitle.textContent = currentSong.title;
+      songTag.textContent = currentSong.tag;
+
+      renderLyrics();
+      updateActiveLine();
+    }
 
     function renderLyrics() {
       lyricsEl.innerHTML = "";
-      lines.forEach((line, index) => {
+
+      currentSong.lines.forEach((line, index) => {
         const div = document.createElement("div");
         div.className = "line";
         div.dataset.index = index;
@@ -263,11 +306,13 @@
 
     function getActiveIndex(currentTime) {
       let active = 0;
-      for (let i = 0; i < lines.length; i++) {
-        if (currentTime >= lines[i].time) {
+
+      for (let i = 0; i < currentSong.lines.length; i++) {
+        if (currentTime >= currentSong.lines[i].time) {
           active = i;
         }
       }
+
       return active;
     }
 
@@ -281,6 +326,7 @@
       });
 
       const activeEl = lineEls[activeIndex];
+
       if (activeEl) {
         activeEl.scrollIntoView({
           block: "center",
@@ -301,15 +347,12 @@
       }
     });
 
-
-
     audio.addEventListener("timeupdate", updateActiveLine);
     audio.addEventListener("seeked", updateActiveLine);
     audio.addEventListener("loadedmetadata", updateActiveLine);
 
-    renderLyrics();
-    updateActiveLine();
+    renderIndex();
+    loadSong(0);
   </script>
 </body>
 </html>
-
