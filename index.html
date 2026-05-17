@@ -64,6 +64,10 @@
       padding: 12px 0 170px;
     }
 
+    .hidden {
+      display: none !important;
+    }
+
     .card {
       background: rgba(20,22,34,0.88);
       border: 1px solid rgba(255,255,255,0.12);
@@ -218,9 +222,9 @@
   <main>
     <section class="index" id="songIndex"></section>
 
-    <section class="card" id="karaoke">
+    <section class="card hidden" id="karaoke">
       <div class="song-title">
-        <h2 id="songTitle">Vamos Rayo</h2>
+        <h2 id="songTitle"></h2>
       </div>
 
       <div class="playerBar">
@@ -241,7 +245,7 @@
     </section>
   </main>
 
-  <button id="jumpBtn" class="jumpBtn">↓ Ir a línea actual</button>
+  <button id="jumpBtn" class="jumpBtn hidden">↓ Ir a línea actual</button>
 
   <script>
     const audio = document.getElementById("audio");
@@ -250,6 +254,7 @@
     const songIndex = document.getElementById("songIndex");
     const songTitle = document.getElementById("songTitle");
     const jumpBtn = document.getElementById("jumpBtn");
+    const karaokeCard = document.getElementById("karaoke");
 
     const songs = [
       {
@@ -294,7 +299,7 @@
       }
     ];
 
-    let currentSong = songs[0];
+    let currentSong = null;
 
     function renderIndex() {
       songIndex.innerHTML = "";
@@ -324,12 +329,18 @@
       const links = songIndex.querySelectorAll("a");
 
       links.forEach((link, index) => {
-        link.classList.toggle("active", songs[index].id === currentSong.id);
+        link.classList.toggle(
+          "active",
+          currentSong && songs[index].id === currentSong.id
+        );
       });
     }
 
     function loadSong(index) {
       currentSong = songs[index];
+
+      karaokeCard.classList.remove("hidden");
+      jumpBtn.classList.remove("hidden");
 
       audio.pause();
       audio.currentTime = 0;
@@ -346,6 +357,10 @@
     function renderLyrics() {
       lyricsEl.innerHTML = "";
 
+      if (!currentSong) {
+        return;
+      }
+
       currentSong.lines.forEach((line, index) => {
         const div = document.createElement("div");
         div.className = "line";
@@ -356,6 +371,10 @@
     }
 
     function getActiveIndex(currentTime) {
+      if (!currentSong) {
+        return 0;
+      }
+
       let active = 0;
 
       for (let i = 0; i < currentSong.lines.length; i++) {
@@ -368,6 +387,10 @@
     }
 
     function updateActiveLine() {
+      if (!currentSong) {
+        return;
+      }
+
       const activeIndex = getActiveIndex(audio.currentTime);
       const lineEls = document.querySelectorAll(".line");
 
@@ -378,6 +401,10 @@
     }
 
     function jumpToActiveLine() {
+      if (!currentSong) {
+        return;
+      }
+
       const activeIndex = getActiveIndex(audio.currentTime);
       const lineEls = document.querySelectorAll(".line");
       const activeEl = lineEls[activeIndex];
@@ -391,6 +418,10 @@
     }
 
     playBtn.addEventListener("click", async () => {
+      if (!currentSong) {
+        return;
+      }
+
       try {
         if (audio.paused) {
           await audio.play();
@@ -409,7 +440,6 @@
     audio.addEventListener("loadedmetadata", updateActiveLine);
 
     renderIndex();
-    loadSong(0);
   </script>
 </body>
 </html>
