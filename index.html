@@ -4,6 +4,10 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>CANCIONERO RAYISTA</title>
+
+  <link rel="icon" href="favicon.ico" sizes="any">
+  <link rel="apple-touch-icon" href="escudo-rayo.png">
+
   <style>
     :root {
       --bg: #08090d;
@@ -42,6 +46,21 @@
       font-size: 13px;
       color: var(--muted);
       margin-bottom: 12px;
+    }
+
+    .titleRow {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 14px;
+      margin: 0 auto;
+    }
+
+    .crest {
+      height: clamp(38px, 8vw, 62px);
+      width: auto;
+      flex: 0 0 auto;
+      display: block;
     }
 
     h1 {
@@ -205,6 +224,18 @@
     }
 
     @media (max-width: 640px) {
+      .titleRow {
+        gap: 10px;
+      }
+
+      .crest {
+        height: clamp(34px, 9vw, 48px);
+      }
+
+      h1 {
+        font-size: clamp(31px, 8vw, 44px);
+      }
+
       .jumpBtn {
         bottom: 132px;
       }
@@ -215,7 +246,12 @@
 <body>
   <header>
     <div class="badge">Cancionero Rayista · Leipzig</div>
-    <h1>La Franja en Leipzig</h1>
+
+    <div class="titleRow">
+      <img class="crest" src="escudo-rayo.png" alt="" aria-hidden="true">
+      <h1>La Franja en Leipzig</h1>
+    </div>
+
     <p class="subtitle">Seremos menos; SE NOS TIENE QUE OÍR MÁS.</p>
   </header>
 
