@@ -170,22 +170,6 @@
       color: white;
     }
 
-    .jumpBtn {
-      position: fixed;
-      left: 50%;
-      bottom: 122px;
-      transform: translateX(-50%);
-      z-index: 100;
-      border: 1px solid rgba(255,255,255,0.25);
-      background: white;
-      color: #111;
-      border-radius: 999px;
-      padding: 12px 18px;
-      font-size: 15px;
-      font-weight: 900;
-      box-shadow: 0 12px 35px rgba(0,0,0,0.45);
-    }
-
     .lyrics {
       margin-top: 10px;
       border-top: 1px solid var(--line);
@@ -277,10 +261,6 @@
       h1 {
         font-size: clamp(31px, 8vw, 44px);
       }
-
-      .jumpBtn {
-        bottom: 132px;
-      }
     }
   </style>
 </head>
@@ -321,15 +301,12 @@
     <footer class="siteFooter">@Guyb</footer>
   </main>
 
-  <button id="jumpBtn" class="jumpBtn hidden">↓ Ir a línea actual</button>
-
   <script>
     const audio = document.getElementById("audio");
     const lyricsEl = document.getElementById("lyrics");
     const playBtn = document.getElementById("playBtn");
     const songIndex = document.getElementById("songIndex");
     const songTitle = document.getElementById("songTitle");
-    const jumpBtn = document.getElementById("jumpBtn");
     const karaokeCard = document.getElementById("karaoke");
 
     const songs = [
@@ -511,7 +488,6 @@
       lyricsEl.innerHTML = "";
 
       karaokeCard.classList.add("hidden");
-      jumpBtn.classList.add("hidden");
 
       updateActiveSongLink();
 
@@ -525,7 +501,6 @@
       currentSong = songs[index];
 
       karaokeCard.classList.remove("hidden");
-      jumpBtn.classList.remove("hidden");
 
       audio.pause();
       audio.currentTime = 0;
@@ -607,23 +582,6 @@
       });
     }
 
-    function jumpToActiveLine() {
-      if (!currentSong) {
-        return;
-      }
-
-      const activeIndex = getActiveIndex(audio.currentTime);
-      const lineEls = document.querySelectorAll(".line");
-      const activeEl = lineEls[activeIndex];
-
-      if (activeEl) {
-        activeEl.scrollIntoView({
-          block: "center",
-          behavior: "smooth"
-        });
-      }
-    }
-
     playBtn.addEventListener("click", async () => {
       if (!currentSong) {
         return;
@@ -639,8 +597,6 @@
         alert("El navegador ha bloqueado el audio. Prueba a pulsar el reproductor nativo.");
       }
     });
-
-    jumpBtn.addEventListener("click", jumpToActiveLine);
 
     audio.addEventListener("timeupdate", updateActiveLine);
     audio.addEventListener("seeked", updateActiveLine);
