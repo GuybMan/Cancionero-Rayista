@@ -1,3 +1,6 @@
+No es solo una línea, porque si quitas el `<span>` visual pero dejas el JavaScript buscando `songTag`, puede romper. Te devuelvo el HTML completo ya limpio: sin tags, sin `songTag`, sin campos `tag`, manteniendo la versión estable y el icono 🔊 en el índice. 
+
+```html
 <!doctype html>
 <html lang="es">
 <head>
@@ -74,27 +77,12 @@
     }
 
     .song-title {
-      display: flex;
-      justify-content: space-between;
-      gap: 16px;
-      align-items: center;
       margin-bottom: 16px;
     }
 
     .song-title h2 {
       margin: 0;
       font-size: 26px;
-    }
-
-    .tag {
-      background: var(--accent);
-      color: white;
-      border-radius: 999px;
-      padding: 6px 10px;
-      font-size: 12px;
-      font-weight: 800;
-      text-transform: uppercase;
-      white-space: nowrap;
     }
 
     audio {
@@ -207,15 +195,6 @@
     }
 
     @media (max-width: 640px) {
-      .song-title {
-        display: block;
-      }
-
-      .tag {
-        display: inline-block;
-        margin-top: 10px;
-      }
-
       .jumpBtn {
         bottom: 132px;
       }
@@ -236,7 +215,6 @@
     <section class="card" id="karaoke">
       <div class="song-title">
         <h2 id="songTitle">Vamos Rayo</h2>
-        <span class="tag" id="songTag">Imprescindible</span>
       </div>
 
       <div class="playerBar">
@@ -265,14 +243,12 @@
     const playBtn = document.getElementById("playBtn");
     const songIndex = document.getElementById("songIndex");
     const songTitle = document.getElementById("songTitle");
-    const songTag = document.getElementById("songTag");
     const jumpBtn = document.getElementById("jumpBtn");
 
     const songs = [
       {
         id: "vamos-rayo",
         title: "Vamos Rayo",
-        tag: "Imprescindible",
         audio: "heart-9-fanchants-free.mp3",
         lines: [
           { time: 0.0, text: "Vamos Rayo, te venimos a ver," },
@@ -288,7 +264,6 @@
       {
         id: "viste-la-luz",
         title: "Un buen día viste la luz",
-        tag: "Imprescindible",
         audio: "vistelaluz.mp3",
         lines: [
           { time: 0.0, text: "Fue hace más de 80 años," },
@@ -346,7 +321,6 @@
       audio.load();
 
       songTitle.textContent = currentSong.title;
-      songTag.textContent = currentSong.tag;
 
       renderLyrics();
       updateActiveLine();
@@ -422,3 +396,4 @@
   </script>
 </body>
 </html>
+```
