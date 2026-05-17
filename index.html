@@ -237,8 +237,7 @@
     const audio = document.getElementById("audio");
     const lyricsEl = document.getElementById("lyrics");
     const playBtn = document.getElementById("playBtn");
-    const loopBtn = document.getElementById("loopBtn");
-    const slowBtn = document.getElementById("slowBtn");
+  
 
     const lines = [
       { time: 0.0, text: "Vamos Rayo, te venimos a ver," },
@@ -302,23 +301,7 @@
       }
     });
 
-    loopBtn.addEventListener("click", () => {
-      audio.loop = !audio.loop;
-      loopBtn.classList.toggle("active", audio.loop);
-      loopBtn.textContent = audio.loop ? "🔁 Bucle ON" : "🔁 Bucle";
-    });
 
-    slowBtn.addEventListener("click", () => {
-      if (audio.playbackRate === 1) {
-        audio.playbackRate = 0.85;
-        slowBtn.classList.add("active");
-        slowBtn.textContent = "🐢 0.85x ON";
-      } else {
-        audio.playbackRate = 1;
-        slowBtn.classList.remove("active");
-        slowBtn.textContent = "🐢 0.85x";
-      }
-    });
 
     audio.addEventListener("timeupdate", updateActiveLine);
     audio.addEventListener("seeked", updateActiveLine);
