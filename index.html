@@ -1,0 +1,408 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Cancionero Rayista Leipzig — Mockup</title>
+  <style>
+    :root {
+      --bg: #111114;
+      --panel: #1b1b20;
+      --panel-2: #24242b;
+      --text: #f7f7f7;
+      --muted: #aaaab5;
+      --rayo: #e51b2b;
+      --active: #fff176;
+      --active-bg: rgba(255, 241, 118, .12);
+      --border: rgba(255,255,255,.12);
+    }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      background:
+        radial-gradient(circle at top left, rgba(229,27,43,.28), transparent 34rem),
+        linear-gradient(135deg, rgba(229,27,43,.14), transparent 18rem),
+        var(--bg);
+      color: var(--text);
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      min-height: 100svh;
+    }
+    .app {
+      width: min(920px, 100%);
+      margin: 0 auto;
+      padding: 18px 14px 44px;
+    }
+    header {
+      padding: 18px 4px 12px;
+    }
+    .eyebrow {
+      color: var(--active);
+      font-weight: 800;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      font-size: .77rem;
+    }
+    h1 {
+      margin: 7px 0 6px;
+      font-size: clamp(2rem, 10vw, 4.2rem);
+      line-height: .92;
+      letter-spacing: -.06em;
+      text-wrap: balance;
+    }
+    .subtitle {
+      color: var(--muted);
+      margin: 0;
+      font-size: 1rem;
+      line-height: 1.45;
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 14px;
+    }
+    @media (min-width: 820px) {
+      .grid { grid-template-columns: 320px 1fr; align-items: start; }
+    }
+    .card {
+      background: linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.025));
+      border: 1px solid var(--border);
+      border-radius: 24px;
+      box-shadow: 0 18px 45px rgba(0,0,0,.26);
+      overflow: hidden;
+      backdrop-filter: blur(8px);
+    }
+    .section-title {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      padding: 16px 16px 10px;
+      color: var(--muted);
+      font-size: .82rem;
+      font-weight: 750;
+      letter-spacing: .06em;
+      text-transform: uppercase;
+    }
+    .song-list { padding: 0 10px 12px; }
+    .song-button {
+      width: 100%;
+      display: grid;
+      grid-template-columns: auto 1fr auto;
+      align-items: center;
+      gap: 12px;
+      border: 1px solid transparent;
+      border-radius: 18px;
+      background: transparent;
+      color: var(--text);
+      text-align: left;
+      padding: 12px;
+      cursor: pointer;
+      font: inherit;
+    }
+    .song-button.active, .song-button:hover {
+      background: rgba(255,255,255,.08);
+      border-color: var(--border);
+    }
+    .number {
+      width: 34px; height: 34px;
+      display: inline-grid; place-items: center;
+      border-radius: 12px;
+      background: var(--rayo);
+      font-weight: 900;
+    }
+    .song-title { font-weight: 900; }
+    .song-meta { color: var(--muted); font-size: .88rem; margin-top: 2px; }
+    .pill {
+      color: var(--active);
+      border: 1px solid rgba(255,241,118,.34);
+      border-radius: 999px;
+      padding: 4px 8px;
+      font-size: .75rem;
+      font-weight: 800;
+      white-space: nowrap;
+    }
+    .player-card { padding: 16px; }
+    .now {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 14px;
+    }
+    .now h2 {
+      margin: 0;
+      font-size: clamp(1.35rem, 6vw, 2.6rem);
+      line-height: 1;
+      letter-spacing: -.04em;
+    }
+    .tag {
+      background: rgba(229,27,43,.18);
+      border: 1px solid rgba(229,27,43,.45);
+      color: #ffd8dc;
+      border-radius: 999px;
+      padding: 6px 10px;
+      font-size: .75rem;
+      font-weight: 850;
+      white-space: nowrap;
+    }
+    audio {
+      width: 100%;
+      margin: 6px 0 12px;
+      accent-color: var(--rayo);
+    }
+    .controls {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin: 8px 0 18px;
+    }
+    .control {
+      border: 1px solid var(--border);
+      background: var(--panel-2);
+      color: var(--text);
+      border-radius: 999px;
+      padding: 10px 12px;
+      font-weight: 800;
+      cursor: pointer;
+    }
+    .control.on {
+      background: var(--active);
+      color: #1b1b12;
+      border-color: transparent;
+    }
+    .lyrics {
+      display: grid;
+      gap: 8px;
+      margin-top: 4px;
+    }
+    .line {
+      padding: 13px 13px;
+      border-radius: 18px;
+      color: rgba(255,255,255,.54);
+      font-size: clamp(1.18rem, 5.5vw, 2.15rem);
+      line-height: 1.13;
+      font-weight: 900;
+      letter-spacing: -.035em;
+      transition: transform .16s ease, background .16s ease, color .16s ease, opacity .16s ease;
+      opacity: .74;
+    }
+    .line.active {
+      background: var(--active-bg);
+      color: var(--active);
+      transform: scale(1.018);
+      opacity: 1;
+      text-shadow: 0 0 18px rgba(255,241,118,.18);
+    }
+    .line.past {
+      color: rgba(255,255,255,.34);
+      opacity: .62;
+    }
+    .footer-note {
+      color: var(--muted);
+      font-size: .9rem;
+      line-height: 1.45;
+      margin: 14px 2px 0;
+    }
+    .share-row {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 10px;
+      margin-top: 14px;
+    }
+    @media (min-width: 560px) { .share-row { grid-template-columns: 1fr 1fr; } }
+    .big-link {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 52px;
+      border-radius: 18px;
+      border: 1px solid var(--border);
+      color: var(--text);
+      text-decoration: none;
+      font-weight: 900;
+      background: rgba(255,255,255,.06);
+    }
+    .big-link.primary {
+      background: var(--rayo);
+      border-color: transparent;
+    }
+    .hidden { display: none !important; }
+  </style>
+</head>
+<body>
+  <main class="app">
+    <header>
+      <div class="eyebrow">Mockup funcional · Final Leipzig</div>
+      <h1>Cancionero Rayista</h1>
+      <p class="subtitle">Índice + audio + letra iluminada por línea. Esta maqueta usa una sola canción y timestamps aproximados editables en <code>lyrics/vamos-rayo.lrc</code>.</p>
+    </header>
+
+    <section class="grid">
+      <aside class="card">
+        <div class="section-title"><span>Índice</span><span>1 canción</span></div>
+        <div class="song-list" id="songList"></div>
+      </aside>
+
+      <section class="card player-card" id="playerPanel">
+        <div class="now">
+          <div>
+            <div class="eyebrow">Sonando ahora</div>
+            <h2 id="songTitle">Vamos Rayo</h2>
+          </div>
+          <span class="tag">Imprescindible</span>
+        </div>
+
+        <audio id="audio" controls preload="metadata" src="audio/vamos-rayo.mp3"></audio>
+
+        <div class="controls">
+          <button class="control" id="playBtn">▶ Play</button>
+          <button class="control" id="loopBtn">↻ Bucle</button>
+          <button class="control" id="slowBtn">0.85x aprender</button>
+          <button class="control" id="normalBtn">1x grada</button>
+        </div>
+
+        <div class="lyrics" id="lyrics"></div>
+
+        <div class="share-row">
+          <a class="big-link primary" href="#" id="shareBtn">Compartir enlace</a>
+          <a class="big-link" href="lyrics/vamos-rayo.lrc" download>Descargar LRC</a>
+        </div>
+
+        <p class="footer-note">Para afinar la sincronización solo hay que cambiar los tiempos del LRC: <code>[00:06.20]Pon más huevos...</code>. El motor de karaoke no cambia.</p>
+      </section>
+    </section>
+  </main>
+
+  <script>
+    const songs = [
+      {
+        id: "vamos-rayo",
+        title: "Vamos Rayo",
+        category: "Imprescindible",
+        audio: "audio/vamos-rayo.mp3",
+        lrc: `[00:01.00]Vamos Rayo, te venimos a ver,
+[00:06.20]Pon más huevos, hoy no puedes perder,
+[00:11.40]Te llevamos dentro del corazón,
+[00:16.80]Este año vamos a salir campeón,
+[00:22.20]Vamos Rayo, te venimos a ver,
+[00:27.50]Pon más huevos, hoy no puedes perder,
+[00:32.80]Te llevamos dentro del corazón,
+[00:38.20]Este año vamos a salir campeón...`
+      }
+    ];
+
+    const songList = document.getElementById("songList");
+    const audio = document.getElementById("audio");
+    const songTitle = document.getElementById("songTitle");
+    const lyricsEl = document.getElementById("lyrics");
+    const playBtn = document.getElementById("playBtn");
+    const loopBtn = document.getElementById("loopBtn");
+    const slowBtn = document.getElementById("slowBtn");
+    const normalBtn = document.getElementById("normalBtn");
+    const shareBtn = document.getElementById("shareBtn");
+
+    let currentSong = songs[0];
+    let parsedLyrics = [];
+
+    function parseTime(raw) {
+      const [min, sec] = raw.split(":");
+      return Number(min) * 60 + Number(sec);
+    }
+
+    function parseLRC(lrc) {
+      return lrc.split("\n")
+        .map(line => {
+          const match = line.match(/^\[(\d{2}:\d{2}\.\d{2})\](.*)$/);
+          if (!match) return null;
+          return { time: parseTime(match[1]), text: match[2].trim() };
+        })
+        .filter(Boolean);
+    }
+
+    function renderIndex() {
+      songList.innerHTML = songs.map((song, index) => `
+        <button class="song-button active" data-id="${song.id}">
+          <span class="number">${index + 1}</span>
+          <span>
+            <span class="song-title">${song.title}</span>
+            <span class="song-meta">${song.category} · letra por línea</span>
+          </span>
+          <span class="pill">karaoke</span>
+        </button>
+      `).join("");
+    }
+
+    function renderSong(song) {
+      currentSong = song;
+      parsedLyrics = parseLRC(song.lrc);
+      audio.src = song.audio;
+      songTitle.textContent = song.title;
+      lyricsEl.innerHTML = parsedLyrics.map((line, i) => `
+        <div class="line" data-index="${i}">${line.text}</div>
+      `).join("");
+      updateLyrics();
+    }
+
+    function getCurrentLineIndex(time) {
+      let active = -1;
+      for (let i = 0; i < parsedLyrics.length; i++) {
+        if (time >= parsedLyrics[i].time) active = i;
+      }
+      return active;
+    }
+
+    function updateLyrics() {
+      const active = getCurrentLineIndex(audio.currentTime);
+      document.querySelectorAll(".line").forEach((line, index) => {
+        line.classList.toggle("active", index === active);
+        line.classList.toggle("past", index < active);
+        if (index === active) {
+          line.scrollIntoView({ block: "center", behavior: "smooth" });
+        }
+      });
+    }
+
+    audio.addEventListener("timeupdate", updateLyrics);
+    audio.addEventListener("play", () => playBtn.textContent = "⏸ Pausa");
+    audio.addEventListener("pause", () => playBtn.textContent = "▶ Play");
+
+    playBtn.addEventListener("click", () => {
+      if (audio.paused) audio.play(); else audio.pause();
+    });
+
+    loopBtn.addEventListener("click", () => {
+      audio.loop = !audio.loop;
+      loopBtn.classList.toggle("on", audio.loop);
+    });
+
+    slowBtn.addEventListener("click", () => {
+      audio.playbackRate = 0.85;
+      slowBtn.classList.add("on");
+      normalBtn.classList.remove("on");
+    });
+
+    normalBtn.addEventListener("click", () => {
+      audio.playbackRate = 1;
+      normalBtn.classList.add("on");
+      slowBtn.classList.remove("on");
+    });
+
+    shareBtn.addEventListener("click", async (event) => {
+      event.preventDefault();
+      const text = "Cancionero Rayista Leipzig — Vamos Rayo";
+      const url = location.href;
+      if (navigator.share) {
+        await navigator.share({ title: text, text, url });
+      } else {
+        await navigator.clipboard.writeText(url);
+        shareBtn.textContent = "Enlace copiado";
+        setTimeout(() => shareBtn.textContent = "Compartir enlace", 1600);
+      }
+    });
+
+    renderIndex();
+    renderSong(currentSong);
+  </script>
+</body>
+</html>
