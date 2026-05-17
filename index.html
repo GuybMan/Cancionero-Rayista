@@ -369,6 +369,12 @@
 
         link.addEventListener("click", (event) => {
           event.preventDefault();
+
+          if (currentSong && currentSong.id === song.id) {
+            collapseSong();
+            return;
+          }
+
           loadSong(index);
 
           document.getElementById("karaoke").scrollIntoView({
@@ -391,6 +397,27 @@
           "active",
           currentSong && songs[index].id === currentSong.id
         );
+      });
+    }
+
+    function collapseSong() {
+      audio.pause();
+      audio.currentTime = 0;
+      audio.removeAttribute("src");
+      audio.load();
+
+      currentSong = null;
+      songTitle.textContent = "";
+      lyricsEl.innerHTML = "";
+
+      karaokeCard.classList.add("hidden");
+      jumpBtn.classList.add("hidden");
+
+      updateActiveSongLink();
+
+      songIndex.scrollIntoView({
+        block: "start",
+        behavior: "smooth"
       });
     }
 
