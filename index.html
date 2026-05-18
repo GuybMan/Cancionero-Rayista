@@ -6,7 +6,7 @@
   <title>CANCIONERO RAYISTA</title>
 
   <link rel="icon" href="favicon.ico" sizes="any">
-  <link rel="apple-touch-icon" href="swos.png">
+  <link rel="apple-touch-icon" href="escudo-rayo.png">
 
   <style>
     :root {
@@ -119,7 +119,7 @@
     main {
       width: min(900px, 94vw);
       margin: 0 auto;
-      padding: 12px 0 56px;
+      padding: 12px 0 170px;
     }
 
     .hidden {
@@ -297,35 +297,7 @@
     }
 
     .closingBanner {
-      position: relative;
-      width: 100%;
-      margin: 22px auto 0;
-      overflow: hidden;
-      border-radius: 12px;
-      opacity: 0.95;
-    }
-
-    .closingBanner::before {
-      content: "";
-      position: absolute;
-      inset: 0;
-      z-index: 1;
-      pointer-events: none;
-      background:
-        linear-gradient(
-          to bottom,
-          rgba(5,5,7,0.95) 0%,
-          rgba(5,5,7,0.55) 12%,
-          rgba(5,5,7,0.00) 32%
-        );
-    }
-
-    .closingBanner img {
-      display: block;
-      width: 100%;
-      height: auto;
-      image-rendering: pixelated;
-      image-rendering: crisp-edges;
+      display: none;
     }
 
     @media (max-width: 640px) {
@@ -365,8 +337,18 @@
       }
 
       .closingBanner {
-        border-radius: 8px;
-        margin-top: 18px;
+        display: block;
+        width: 100%;
+        margin: 18px auto 0;
+        overflow: hidden;
+      }
+
+      .closingBanner img {
+        display: block;
+        width: 100%;
+        height: auto;
+        image-rendering: pixelated;
+        image-rendering: crisp-edges;
       }
     }
   </style>
