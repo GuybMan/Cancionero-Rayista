@@ -49,7 +49,8 @@
     }
 
     header,
-    main {
+    main,
+    .closingBanner {
       position: relative;
       z-index: 1;
     }
@@ -119,7 +120,7 @@
     main {
       width: min(900px, 94vw);
       margin: 0 auto;
-      padding: 12px 0 170px;
+      padding: 12px 0 36px;
     }
 
     .hidden {
@@ -296,6 +297,20 @@
       gap: 4px;
     }
 
+    .closingBanner {
+      width: 100%;
+      margin-top: 18px;
+      padding-bottom: 0;
+    }
+
+    .closingBanner img {
+      display: block;
+      width: 100%;
+      height: auto;
+      image-rendering: pixelated;
+      image-rendering: crisp-edges;
+    }
+
     @media (max-width: 640px) {
       body::before {
         background:
@@ -376,6 +391,10 @@
       <div>© GUYB, 2026</div>
     </footer>
   </main>
+
+  <section class="closingBanner">
+    <img src="cierre-pixel.png" alt="Cierre pixelado del cancionero rayista">
+  </section>
 
   <script>
     const audio = document.getElementById("audio");
