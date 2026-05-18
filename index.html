@@ -234,19 +234,53 @@
       background: rgba(20,22,34,0.78);
       border: 1px solid rgba(255,255,255,0.14);
       border-radius: 16px;
-      padding: 14px 16px;
-      font-weight: 800;
-      transition: all 0.18s ease;
+      padding: 15px 17px;
+      font-size: clamp(17px, 2.4vw, 19px);
+      font-weight: 850;
+      letter-spacing: -0.15px;
+      transition:
+        transform 0.18s ease,
+        border-color 0.18s ease,
+        box-shadow 0.18s ease,
+        background 0.18s ease;
       backdrop-filter: blur(8px);
-      box-shadow: 0 10px 30px rgba(0,0,0,0.22);
+      box-shadow:
+        0 10px 30px rgba(0,0,0,0.24),
+        0 0 0 rgba(227,41,47,0);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .index a:hover {
+      transform: translateY(-2px) scale(1.006);
+      border-color: rgba(227,41,47,0.46);
+      background: rgba(26,24,34,0.86);
+      box-shadow:
+        0 14px 34px rgba(0,0,0,0.34),
+        0 0 18px rgba(227,41,47,0.18);
     }
 
     .index a.active {
       background: linear-gradient(90deg, rgba(227,41,47,0.95), rgba(255,255,255,0.12));
-      border-color: rgba(255,255,255,0.28);
+      border-color: rgba(255,255,255,0.30);
       color: white;
-      box-shadow: 0 8px 24px rgba(0,0,0,0.35);
-      transform: scale(1.01);
+      box-shadow:
+        0 8px 24px rgba(0,0,0,0.38),
+        0 0 22px rgba(227,41,47,0.22);
+      transform: scale(1.012);
+    }
+
+    .speakerIcon {
+      font-size: 1.22em;
+      line-height: 1;
+      filter: drop-shadow(0 0 5px rgba(227,41,47,0.45));
+      flex: 0 0 auto;
+    }
+
+    .songLabel {
+      line-height: 1.15;
+      text-shadow: 0 2px 10px rgba(0,0,0,0.75);
     }
 
     .siteFooter {
@@ -287,6 +321,15 @@
 
       h1 {
         font-size: clamp(31px, 8vw, 44px);
+      }
+
+      .index a {
+        padding: 15px 15px;
+        font-size: clamp(16px, 4.2vw, 18px);
+      }
+
+      .speakerIcon {
+        font-size: 1.18em;
       }
     }
   </style>
@@ -568,7 +611,17 @@
       songs.forEach((song, index) => {
         const link = document.createElement("a");
         link.href = "#karaoke";
-        link.textContent = "🔊 " + song.title;
+
+        const icon = document.createElement("span");
+        icon.className = "speakerIcon";
+        icon.textContent = "🔊";
+
+        const label = document.createElement("span");
+        label.className = "songLabel";
+        label.textContent = song.title;
+
+        link.appendChild(icon);
+        link.appendChild(label);
 
         link.addEventListener("click", (event) => {
           event.preventDefault();
