@@ -79,11 +79,18 @@
       margin: 0 auto;
     }
 
-    .crest {
+    .titleIcon {
       height: clamp(38px, 8vw, 62px);
       width: auto;
       flex: 0 0 auto;
       display: block;
+      object-fit: contain;
+    }
+
+    .homeLink {
+      color: inherit;
+      text-decoration: none;
+      display: inline-block;
     }
 
     h1 {
@@ -127,6 +134,12 @@
     .song-title h2 {
       margin: 0;
       font-size: 26px;
+      cursor: pointer;
+    }
+
+    .song-title h2:hover {
+      color: white;
+      text-shadow: 0 0 18px rgba(227,41,47,0.35);
     }
 
     audio {
@@ -237,6 +250,12 @@
       letter-spacing: 0.2px;
       opacity: 0.9;
       text-shadow: 0 2px 12px rgba(0,0,0,0.8);
+      display: grid;
+      gap: 4px;
+    }
+
+    .siteFooter .rights {
+      text-transform: uppercase;
     }
 
     @media (max-width: 640px) {
@@ -254,7 +273,7 @@
         gap: 10px;
       }
 
-      .crest {
+      .titleIcon {
         height: clamp(34px, 9vw, 48px);
       }
 
@@ -270,8 +289,11 @@
     <div class="badge">Cancionero Rayista · Leipzig</div>
 
     <div class="titleRow">
-      <img class="crest" src="escudo-rayo.png" alt="" aria-hidden="true">
-      <h1>La Franja en Leipzig</h1>
+      <img class="titleIcon" src="escudo-rayo.png" alt="" aria-hidden="true">
+      <a class="homeLink" href="#" id="homeLink">
+        <h1>La Franja en Leipzig</h1>
+      </a>
+      <img class="titleIcon" src="Trofeo_UEFA_Europa_Conference_League.svg.png" alt="" aria-hidden="true">
     </div>
 
     <p class="subtitle">Porque seremos menos en Alemania, SE NOS TIENE QUE OÍR MÁS.</p>
@@ -282,7 +304,7 @@
 
     <section class="card hidden" id="karaoke">
       <div class="song-title">
-        <h2 id="songTitle"></h2>
+        <h2 id="songTitle" title="Cerrar reproductor"></h2>
       </div>
 
       <div class="playerBar">
@@ -298,7 +320,10 @@
       <div class="lyrics" id="lyrics"></div>
     </section>
 
-    <footer class="siteFooter">@Guyb</footer>
+    <footer class="siteFooter">
+      <div class="rights">Las canciones son propiedad intelectual de Bukaneros</div>
+      <div>© Guyb, 2026.</div>
+    </footer>
   </main>
 
   <script>
@@ -308,6 +333,7 @@
     const songIndex = document.getElementById("songIndex");
     const songTitle = document.getElementById("songTitle");
     const karaokeCard = document.getElementById("karaoke");
+    const homeLink = document.getElementById("homeLink");
 
     const songs = [
       {
@@ -687,6 +713,25 @@
         }
       } catch (error) {
         alert("El navegador ha bloqueado el audio. Prueba a pulsar el reproductor nativo.");
+      }
+    });
+
+    homeLink.addEventListener("click", (event) => {
+      event.preventDefault();
+
+      if (currentSong) {
+        collapseSong();
+      } else {
+        window.scrollTo({
+          top: 0,
+          behavior: "smooth"
+        });
+      }
+    });
+
+    songTitle.addEventListener("click", () => {
+      if (currentSong) {
+        collapseSong();
       }
     });
 
