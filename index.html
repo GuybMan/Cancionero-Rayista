@@ -3,10 +3,52 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>CANCIONERO RAYISTA</title>
+
+  <title>Cancionero rayista | La Franja en Leipzig</title>
+  <meta name="description" content="Cancionero rayista con letras y audios para cantar al Rayo Vallecano en Leipzig: canciones de la Franja, himnos de grada y repertorio vallecano." />
+  <meta name="robots" content="index, follow" />
+  <link rel="canonical" href="https://cancionerorayista.com/" />
+
+  <meta property="og:title" content="Cancionero rayista | La Franja en Leipzig" />
+  <meta property="og:description" content="Letras y audios para cantar al Rayo Vallecano en Leipzig. Canciones de la Franja, himnos de grada y repertorio rayista." />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://cancionerorayista.com/" />
+  <meta property="og:image" content="https://cancionerorayista.com/escudo-rayo.png" />
+  <meta property="og:locale" content="es_ES" />
+
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Cancionero rayista | La Franja en Leipzig" />
+  <meta name="twitter:description" content="Letras y audios para cantar al Rayo Vallecano en Leipzig." />
+  <meta name="twitter:image" content="https://cancionerorayista.com/escudo-rayo.png" />
+
+  <meta name="theme-color" content="#e3292f" />
 
   <link rel="icon" href="favicon.ico" sizes="any">
   <link rel="apple-touch-icon" href="escudo-rayo.png">
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    "name": "Cancionero rayista",
+    "alternateName": "La Franja en Leipzig",
+    "url": "https://cancionerorayista.com/",
+    "description": "Cancionero rayista con letras y audios para animar al Rayo Vallecano en Leipzig.",
+    "inLanguage": "es",
+    "creator": {
+      "@type": "Person",
+      "name": "GUYB"
+    },
+    "about": [
+      "Rayo Vallecano",
+      "cancionero rayista",
+      "La Franja",
+      "Vallekas",
+      "Leipzig",
+      "cánticos rayistas"
+    ]
+  }
+  </script>
 
   <style>
     :root {
@@ -114,6 +156,15 @@
       color: var(--muted);
       font-size: 16px;
       text-shadow: 0 2px 14px rgba(0,0,0,0.7);
+    }
+
+    .seoIntro {
+      margin: 10px auto 0;
+      max-width: 720px;
+      color: rgba(255,255,255,0.58);
+      font-size: 14px;
+      line-height: 1.42;
+      text-shadow: 0 2px 14px rgba(0,0,0,0.75);
     }
 
     main {
@@ -283,6 +334,34 @@
       text-shadow: 0 2px 10px rgba(0,0,0,0.75);
     }
 
+    .seoBlock {
+      margin: 18px 0 0;
+      padding: 16px 18px;
+      border-radius: 18px;
+      background: rgba(20,22,34,0.48);
+      border: 1px solid rgba(255,255,255,0.09);
+      color: rgba(255,255,255,0.68);
+      font-size: 14px;
+      line-height: 1.45;
+      text-shadow: 0 2px 12px rgba(0,0,0,0.75);
+      backdrop-filter: blur(6px);
+    }
+
+    .seoBlock h2 {
+      margin: 0 0 6px;
+      font-size: 16px;
+      color: rgba(255,255,255,0.88);
+      letter-spacing: -0.2px;
+    }
+
+    .seoBlock p {
+      margin: 0;
+    }
+
+    .seoBlock p + p {
+      margin-top: 8px;
+    }
+
     .siteFooter {
       margin-top: 18px;
       text-align: center;
@@ -331,6 +410,11 @@
         font-size: clamp(31px, 8vw, 44px);
       }
 
+      .seoIntro {
+        font-size: 13px;
+        max-width: 94vw;
+      }
+
       .index a {
         padding: 15px 15px;
         font-size: clamp(16px, 4.2vw, 18px);
@@ -338,6 +422,11 @@
 
       .speakerIcon {
         font-size: 1.18em;
+      }
+
+      .seoBlock {
+        font-size: 13px;
+        padding: 14px 15px;
       }
 
       .siteFooter {
@@ -368,17 +457,18 @@
 
     <div class="titleRow">
       <img class="titleIcon" src="escudo-rayo.png" alt="" aria-hidden="true">
-      <a class="homeLink" href="#" id="homeLink">
+      <a class="homeLink" href="#" id="homeLink" aria-label="Volver a la home del cancionero rayista">
         <h1>La Franja en Leipzig</h1>
       </a>
       <img class="trophyIcon" src="Trofeo_UEFA_Europa_Conference_League.svg.png" alt="" aria-hidden="true">
     </div>
 
     <p class="subtitle">Porque seremos menos en Alemania, se nos tiene que oír más</p>
+    <p class="seoIntro">Cancionero rayista con letras y audios para animar al Rayo Vallecano: canciones de la Franja, cánticos de Vallekas y repertorio para Leipzig.</p>
   </header>
 
   <main>
-    <section class="index" id="songIndex"></section>
+    <section class="index" id="songIndex" aria-label="Lista de canciones del cancionero rayista"></section>
 
     <section class="card hidden" id="karaoke">
       <div class="song-title">
@@ -396,6 +486,12 @@
       </div>
 
       <div class="lyrics" id="lyrics"></div>
+    </section>
+
+    <section class="seoBlock" aria-label="Información del cancionero rayista">
+      <h2>Cancionero rayista para cantar en Leipzig</h2>
+      <p>Esta página reúne letras y audios de canciones del Rayo Vallecano para que la afición rayista pueda ensayar y cantar junta a la Franja.</p>
+      <p>Canciones incluidas: ¡A las armas!, Pon más huevos, No me importa nada, Siente latir, Un buen día viste la luz, Porque te quiero te vengo a ver, El Rayo fui yo, Cantaremos todos unidos, Nunca te abandonaré, La revolución, Era un día cualquiera, La vida pirata, Todos los fachas fuera de mi barrio y Por la mañana café.</p>
     </section>
 
     <footer class="siteFooter">
@@ -691,6 +787,7 @@
       songs.forEach((song, index) => {
         const link = document.createElement("a");
         link.href = "#karaoke";
+        link.setAttribute("aria-label", "Abrir canción: " + song.title);
 
         const icon = document.createElement("span");
         icon.className = "speakerIcon";
