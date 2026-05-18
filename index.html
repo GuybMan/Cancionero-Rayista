@@ -87,6 +87,14 @@
       object-fit: contain;
     }
 
+    .trophyIcon {
+      height: clamp(44px, 9vw, 72px);
+      width: auto;
+      flex: 0 0 auto;
+      display: block;
+      object-fit: contain;
+    }
+
     .homeLink {
       color: inherit;
       text-decoration: none;
@@ -254,10 +262,6 @@
       gap: 4px;
     }
 
-    .siteFooter .rights {
-      text-transform: uppercase;
-    }
-
     @media (max-width: 640px) {
       body::before {
         background:
@@ -277,6 +281,10 @@
         height: clamp(34px, 9vw, 48px);
       }
 
+      .trophyIcon {
+        height: clamp(39px, 10vw, 56px);
+      }
+
       h1 {
         font-size: clamp(31px, 8vw, 44px);
       }
@@ -293,7 +301,7 @@
       <a class="homeLink" href="#" id="homeLink">
         <h1>La Franja en Leipzig</h1>
       </a>
-      <img class="titleIcon" src="Trofeo_UEFA_Europa_Conference_League.svg.png" alt="" aria-hidden="true">
+      <img class="trophyIcon" src="Trofeo_UEFA_Europa_Conference_League.svg.png" alt="" aria-hidden="true">
     </div>
 
     <p class="subtitle">Porque seremos menos en Alemania, SE NOS TIENE QUE OÍR MÁS.</p>
@@ -321,8 +329,8 @@
     </section>
 
     <footer class="siteFooter">
-      <div class="rights">Las canciones son propiedad intelectual de Bukaneros</div>
-      <div>© Guyb, 2026.</div>
+      <div>Las canciones son propiedad intelectual de Bukaneros</div>
+      <div>© GUYB, 2026</div>
     </footer>
   </main>
 
